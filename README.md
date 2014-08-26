@@ -1,4 +1,5 @@
 sharptypeconverter
 ==================
 
-Convert C# source to Typescript
+Convert C# source to Typescript.
+
