@@ -20,32 +20,20 @@ method /constructor overloading is handled through helper function (only works f
 
 Todo:
 
-Uploading of multiple files, so converter can resolve internal dependencies correctly.
-
-same for console app.
-
-Fix code crash at files without a namespace
-
-resolve external dependancies and create typescript definition files to include with the output so the output code can build correctly
-
-try to build the output as initial validation.
-
-Improve method/constructor overloading.
-
-Test for bugs and for syntax types not yet implemented. 
-
-
+ - Uploading of multiple files, so converter can resolve internal dependencies correctly.
+ - Same for console app.
+ - Fix code crash at files without a namespace
+ - resolve external dependancies and create typescript definition files to include with the output so the output code can build correctly
+ - Try to build the output as initial validation.
+ - Improve method/constructor overloading.
+ - Test for bugs and for syntax types not yet implemented. 
 
 github page UI:
 
-code highlighting
-
-multiple sample codes.
-
-better texbox formatting
-
-
-
+ - Code highlighting
+ - Multiple sample codes.
+ - Better texbox formatting
+ - 
 Think of more Todo points.
 
 
