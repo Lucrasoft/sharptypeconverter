@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "consoleApp", "sharptypeconv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Converter", "Converter\Converter.csproj", "{C7E46FC6-211A-409F-A1EE-1FC7C6BF4BCB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{28318A2A-9CB5-49C1-B441-FAA407DC6628}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C7E46FC6-211A-409F-A1EE-1FC7C6BF4BCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7E46FC6-211A-409F-A1EE-1FC7C6BF4BCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7E46FC6-211A-409F-A1EE-1FC7C6BF4BCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28318A2A-9CB5-49C1-B441-FAA407DC6628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28318A2A-9CB5-49C1-B441-FAA407DC6628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28318A2A-9CB5-49C1-B441-FAA407DC6628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28318A2A-9CB5-49C1-B441-FAA407DC6628}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
