@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C7E46FC6-211A-409F-A1EE-1FC7C6BF4BCB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Converter</RootNamespace>
+    <AssemblyName>Converter</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>..\packages\ICSharpCode.NRefactory.5.4.0\lib\Net40\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.NRefactory.Cecil">
+      <HintPath>..\packages\ICSharpCode.NRefactory.5.4.0\lib\Net40\ICSharpCode.NRefactory.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.NRefactory.CSharp">
+      <HintPath>..\packages\ICSharpCode.NRefactory.5.4.0\lib\Net40\ICSharpCode.NRefactory.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.NRefactory.Xml">
+      <HintPath>..\packages\ICSharpCode.NRefactory.5.4.0\lib\Net40\ICSharpCode.NRefactory.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\packages\Mono.Cecil.0.9.5.4\lib\net40\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb">
+      <HintPath>..\packages\Mono.Cecil.0.9.5.4\lib\net40\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb">
+      <HintPath>..\packages\Mono.Cecil.0.9.5.4\lib\net40\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks">
+      <HintPath>..\packages\Mono.Cecil.0.9.5.4\lib\net40\Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CodeSegment.cs" />
+    <Compile Include="Converter.cs" />
+    <Compile Include="Emitter\BaseEmitter.cs" />
+    <Compile Include="Emitter\Emitter.cs" />
+    <Compile Include="Emitter\EmitterArguments.cs" />
+    <Compile Include="Emitter\EnumTypeDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\ArgumentsEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\BlockStatementEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\ConstructorOverloadDispatchEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\DelegateDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\EnumMemberDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\ExpressionEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\ExpressionStatementEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\FieldDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\ForeachStatementEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\ForStatementEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\HelperFunctions\AstTypeToStringConverter.cs" />
+    <Compile Include="Emitter\OutputFunctions\BaseTypesEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\ConstructorDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\IfElseStatementEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\LockStatementEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\MethodOverloadDispatchEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\NamespaceDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\OperatorDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\ParameterEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\MethodDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\ParameterDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\PropertyDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\ReturnStatementEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\RootEmitters\AssignmentOperatorEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\RootEmitters\BinaryOperatorEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\ClassAndStructDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\RootEmitters\PrimitiveValueEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\RootEmitters\UnaryOperatorEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\ThrowStatementEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\TryCatchStatementEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\TypeDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\TypeDeclarationInterfaceEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\TypeParametersEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\UnsafeStatementEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\UsingDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\UsingStatementEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\VariableDeclarationStatementEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\WhileStatementEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\YieldReturnStatementEmitter.cs" />
+    <Compile Include="Emitter\SwitchStatementEmitter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeTreeExtractor.cs" />
+    <Compile Include="TypeTree\NamespaceInfo.cs" />
+    <Compile Include="TypeTree\NodeReference.cs" />
+    <Compile Include="TypeTree\TIBase.cs" />
+    <Compile Include="TypeTree\TIConstructor.cs" />
+    <Compile Include="TypeTree\TIMethod.cs" />
+    <Compile Include="TypeTree\TIOperator.cs" />
+    <Compile Include="TypeTree\TypeInfo.cs" />
+    <Compile Include="TypeTree\TypeTree.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
