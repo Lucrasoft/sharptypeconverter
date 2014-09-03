@@ -37,7 +37,15 @@
           <p>
               For now the project helps with the conversion as much as possible, but doesn't output 100% working code.
           <p>
-</section>
+          <p>
+              For a working example paste your c# code in the put textarea and press convert.
+              Only works for complete c# files including namespaces that build properly.
+
+              <textarea id="inputArea" style="width:100%; height:100px"></textarea>
+              <button onclick="convert()">convert</button>
+              <textarea id="outputArea" style="width:100%; height:100px"></textarea>
+          </p>
+      </section>
     </div>
 
     <!-- FOOTER  -->
@@ -48,7 +56,19 @@
       </footer>
     </div>
 
-    
+      <script>
+          function convert() {
+              var data = "=" + document.getElementById("inputArea").value;
+              var xmlHttp = new XMLHttpRequest();
+              xmlHttp.onreadystatechange = showConversion;
+              xmlHttp.open("POST", "http://sharptypeconverter.lucrasoft.nl/api/convert", true);
+              xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+              xmlHttp.send(data);
+          }
+          function showConversion(data) {
+              document.getElementById("outputArea").value = data.responseText;
+          }
+      </script>
 
   </body>
 </html>
