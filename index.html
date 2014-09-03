@@ -7,7 +7,7 @@
     <meta name="description" content="Sharptypeconverter : Convert C# source to Typescript">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
+    <script src="javascripts/jquery-2.1.1.js"></script>
     <title>Sharptypeconverter</title>
   </head>
 
@@ -57,17 +57,16 @@
     </div>
 
       <script>
-          function convert() {
-              var data = "=" + document.getElementById("inputArea").value;
-              var xmlHttp = new XMLHttpRequest();
-              xmlHttp.onreadystatechange = showConversion;
-              xmlHttp.open("POST", "http://sharptypeconverter.lucrasoft.nl/api/convert", true);
-              xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-              xmlHttp.send(data);
-          }
-          function showConversion(data) {
-              document.getElementById("outputArea").value = data.responseText;
-          }
+            function convert() {
+                var data = "=" + $("#inputArea").val();
+                $.ajax({
+                    type: "POST",
+                    url: "http://sharptypeconverter.lucrasoft.nl/api/convert",
+                    data: data,
+                }).then(function (result) {
+                    $("#outputArea").val(result);
+                });
+            }
       </script>
 
   </body>
