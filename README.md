@@ -8,6 +8,8 @@ Sharptypeconverter is a project that tries to convert c# code to typescript code
 For the parsing the parser from NRefactory is used.  https://github.com/icsharpcode/NRefactory 
 After that the parsed tree is read and a typescript file is build from here.
 
+Check out the current functionality on the guthub page: http://lucrasoft.github.io/sharptypeconverter/ 
+
 Current Status: 
 
 Files can be converted individually.
@@ -20,11 +22,32 @@ Todo:
 
 Uploading of multiple files, so converter can resolve internal dependencies correctly.
 
+same for console app.
+
+Fix code crash at files without a namespace
+
+resolve external dependancies and create typescript definition files to include with the output so the output code can build correctly
+
+try to build the output as initial validation.
+
 Improve method/constructor overloading.
 
 Test for bugs and for syntax types not yet implemented. 
 
+
+
+github page UI:
+
+code highlighting
+
+multiple sample codes.
+
+better texbox formatting
+
+
+
 Think of more Todo points.
+
 
 
 
