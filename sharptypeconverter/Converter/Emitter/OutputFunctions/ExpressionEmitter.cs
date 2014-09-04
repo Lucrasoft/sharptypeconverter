@@ -121,7 +121,15 @@ namespace Converter.Emitter.OutputFunctions
                 case "ObjectCreateExpression":
                     var oce = (ObjectCreateExpression)expression;
                     //TODO : find out if we need to use the static-Create on internal objects or the New ;
-                    output.Add(oce.ToString());
+                    var objectNameSpace = arguments.ReferencedNamespaces.FirstOrDefault(ns => arguments.TypeTree.ExistsTypeInNamespace(oce.Type.ToString(), ns));
+                    if (objectNameSpace != null)
+                    {
+                        output.Add("new " + objectNameSpace + "." + oce.Type + "()");
+                    }
+                    else
+                    {
+                        output.Add("new " + oce.Type + "()");
+                    }
                     break;
                 case "ParenthesizedExpression":
                     var pe = (ParenthesizedExpression)expression;
@@ -141,16 +149,12 @@ namespace Converter.Emitter.OutputFunctions
                 case "TypeReferenceExpression":
                     //TODO : better 
                     //FIND type
-                    bool wasFound = false;
-                    foreach (var ns in arguments.ReferencedNamespaces)
+                    var typeNameSpace = arguments.ReferencedNamespaces.FirstOrDefault(ns => arguments.TypeTree.ExistsTypeInNamespace(expression.ToString(), ns));
+                    if (typeNameSpace != null)
                     {
-                        if (arguments.TypeTree.ExistsTypeInNamespace(expression.ToString(), ns))
-                        {
-                            output.AddWithoutSpace(ns + "." + expression.ToString());
-                            wasFound = true;
-                        }
+                        output.AddWithoutSpace(typeNameSpace + "." + expression);
                     }
-                    if (!wasFound)
+                    else
                     {
                         output.AddWithoutSpace(expression.ToString());
                     }
