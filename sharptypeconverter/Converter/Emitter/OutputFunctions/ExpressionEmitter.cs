@@ -210,6 +210,11 @@ namespace Converter.Emitter.OutputFunctions
                         }
                     }
                     break;
+                case "DefaultValueExpression":
+                    //default operator not supported in typescript since no type information is available at runtime
+                    //since javascript handles null as false in boolean expressions and as 0 in math expressions it is less critical in javascript.
+                    output.Add("null");
+                    break;
                 default:
                     throw new NotImplementedException();
             }
