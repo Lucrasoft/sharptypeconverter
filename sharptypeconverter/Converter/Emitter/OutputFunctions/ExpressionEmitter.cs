@@ -121,7 +121,17 @@ namespace Converter.Emitter.OutputFunctions
                 case "ObjectCreateExpression":
                     var oce = (ObjectCreateExpression)expression;
                     //TODO : find out if we need to use the static-Create on internal objects or the New ;
-                    var objectNameSpace = arguments.ReferencedNamespaces.FirstOrDefault(ns => arguments.TypeTree.ExistsTypeInNamespace(oce.Type.ToString(), ns));
+                    string objectNameSpace;
+                    if (arguments.TypeTree.DefaultNamespace.ExistsType(oce.Type.ToString()))
+                    {
+                        objectNameSpace = arguments.TypeTree.DefaultNamespace.Namespace;
+                    }
+                    else
+                    {
+                        objectNameSpace =
+                            arguments.ReferencedNamespaces.FirstOrDefault(
+                                ns => arguments.TypeTree.ExistsTypeInNamespace(oce.Type.ToString(), ns));
+                    }
                     if (objectNameSpace != null)
                     {
                         output.Add("new " + objectNameSpace + "." + oce.Type + "()");
@@ -149,7 +159,17 @@ namespace Converter.Emitter.OutputFunctions
                 case "TypeReferenceExpression":
                     //TODO : better 
                     //FIND type
-                    var typeNameSpace = arguments.ReferencedNamespaces.FirstOrDefault(ns => arguments.TypeTree.ExistsTypeInNamespace(expression.ToString(), ns));
+                    string typeNameSpace;
+                    if (arguments.TypeTree.DefaultNamespace.ExistsType(expression.ToString()))
+                    {
+                        typeNameSpace = arguments.TypeTree.DefaultNamespace.Namespace;
+                    }
+                    else
+                    {
+                        typeNameSpace =
+                            arguments.ReferencedNamespaces.FirstOrDefault(
+                                ns => arguments.TypeTree.ExistsTypeInNamespace(expression.ToString(), ns));
+                    }
                     if (typeNameSpace != null)
                     {
                         output.AddWithoutSpace(typeNameSpace + "." + expression);

@@ -7,6 +7,7 @@ namespace Converter.TypeTree
     public class Tree
     {
         private readonly Dictionary<string, NamespaceInfo> namespaces;
+        public NamespaceInfo DefaultNamespace { private set; get; }
         public string ActiveNameSpace { private set; get; }
         private TypeInfo activeType;
         public TypeInfo ActiveType
@@ -21,6 +22,7 @@ namespace Converter.TypeTree
         {
             nameSpaceStack = new Stack<string>();
             namespaces = new Dictionary<string, NamespaceInfo>();
+            DefaultNamespace = new NamespaceInfo{Namespace = "DefaultNamespace"};
         }
 
         private void RecalcActiveNameSpace()
@@ -54,6 +56,10 @@ namespace Converter.TypeTree
 
         public bool ExistsTypeInNamespace(string typeName, string nameSpaceName)
         {
+            if (nameSpaceName == null)
+            {
+                return false;
+            }
             if (namespaces.ContainsKey(nameSpaceName))
             {
                 var ns = namespaces[nameSpaceName];
@@ -74,11 +80,19 @@ namespace Converter.TypeTree
 
         public void SetActiveType(string name, ClassType classType)
         {
-            if (!namespaces.ContainsKey(ActiveNameSpace))
+            NamespaceInfo nsItem;
+            if (string.IsNullOrEmpty(ActiveNameSpace))
             {
-                namespaces.Add(ActiveNameSpace, new NamespaceInfo());
+                nsItem = DefaultNamespace;
             }
-            var nsItem = namespaces[ActiveNameSpace];
+            else
+            {
+                if (!namespaces.ContainsKey(ActiveNameSpace))
+                {
+                    namespaces.Add(ActiveNameSpace, new NamespaceInfo());
+                }
+                nsItem = namespaces[ActiveNameSpace];
+            }
             if (!nsItem.Types.ContainsKey(name))
             {
                 var newtype = new TypeInfo(name, classType);
