@@ -1,10 +1,6 @@
-﻿using Converter.TypeTree;
-using ICSharpCode.NRefactory.CSharp;
+﻿using ICSharpCode.NRefactory.CSharp;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Converter.Emitter.OutputFunctions.HelperFunctions
 {
@@ -32,7 +28,8 @@ namespace Converter.Emitter.OutputFunctions.HelperFunctions
                 }
                 else
                 {
-                    result = namespaces.FirstOrDefault(ns => typeTree.ExistsTypeInNamespace(result, ns)) + "." + result;
+                    var nameSpace = namespaces.FirstOrDefault(ns => typeTree.ExistsTypeInNamespace(result, ns));
+                    result = string.IsNullOrEmpty(nameSpace) ? result : nameSpace + "." + result;
                 }
                 result += TypeArgumentsToString(st.TypeArguments, arguments);
                 return result;
@@ -147,17 +144,16 @@ namespace Converter.Emitter.OutputFunctions.HelperFunctions
                         return "void";
 
                     default:
-                        return "TODO-" + pt.KnownTypeCode.ToString();
+                        return "TODO-" + pt.KnownTypeCode;
 
                 }
-                throw new NotImplementedException();
                 //return "";
                 //pt.KnownTypeCode = ICSharpCode.NRefactory.TypeSystem.KnownTypeCode.
             }
-            else if (node is ComposedType)
+            if (node is ComposedType)
             {
                 var ct = (ComposedType)node;
-                string result = "";
+                string result;
                 // array's
                 // TS doesn't support multidimensional array's like  int[,] 
                 // But does support array like int[][]
@@ -177,17 +173,14 @@ namespace Converter.Emitter.OutputFunctions.HelperFunctions
 
                 //throw new NotImplementedException();
             }
-            else if (node is MemberType)
+            if (node is MemberType)
             {
                 var mt = (MemberType)node;
                 //type args ?
                 return mt.Target + "." + mt.MemberName + TypeArgumentsToString(mt.TypeArguments, arguments);
 
             }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            throw new NotImplementedException();
         }
         private static string TypeArgumentsToString(AstNodeCollection<AstType> typeArguments, EmitterArguments arguments)
         {
