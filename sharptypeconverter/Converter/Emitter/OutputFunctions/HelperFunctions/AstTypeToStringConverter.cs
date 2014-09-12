@@ -21,26 +21,23 @@ namespace Converter.Emitter.OutputFunctions.HelperFunctions
 
                 //probeer Identifier te vinden in de typeTree om tot een directe fully namespace aanroep te komen
                 //zoek eerst in de huidige namespace
+
                 if (typeTree.ExistsTypeInNamespace(result, typeTree.ActiveNameSpace))
                 {
                     result = typeTree.ActiveNameSpace + "." + result;
                 }
+                else if (typeTree.DefaultNamespace.ExistsType(result))
+                {
+                    result = typeTree.DefaultNamespace.Namespace + "." + result;
+                }
                 else
                 {
-                    //zoek dan in alle referenced namespacea
-                    foreach (var ns in namespaces)
-                    {
-                        if (typeTree.ExistsTypeInNamespace(result, ns))
-                        {
-                            result = ns + "." + result;
-                        }
-                    }
+                    result = namespaces.FirstOrDefault(ns => typeTree.ExistsTypeInNamespace(result, ns)) + "." + result;
                 }
-
                 result += TypeArgumentsToString(st.TypeArguments, arguments);
                 return result;
             }
-            else if (node is PrimitiveType)
+             if (node is PrimitiveType)
             {
                 var pt = (PrimitiveType)node;
                 switch (pt.KnownTypeCode)

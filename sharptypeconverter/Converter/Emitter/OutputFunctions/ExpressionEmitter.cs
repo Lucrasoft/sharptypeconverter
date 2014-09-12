@@ -121,7 +121,25 @@ namespace Converter.Emitter.OutputFunctions
                 case "ObjectCreateExpression":
                     var oce = (ObjectCreateExpression)expression;
                     //TODO : find out if we need to use the static-Create on internal objects or the New ;
-                    output.Add(oce.ToString());
+                    string objectNameSpace;
+                    if (arguments.TypeTree.DefaultNamespace.ExistsType(oce.Type.ToString()))
+                    {
+                        objectNameSpace = arguments.TypeTree.DefaultNamespace.Namespace;
+                    }
+                    else
+                    {
+                        objectNameSpace =
+                            arguments.ReferencedNamespaces.FirstOrDefault(
+                                ns => arguments.TypeTree.ExistsTypeInNamespace(oce.Type.ToString(), ns));
+                    }
+                    if (objectNameSpace != null)
+                    {
+                        output.Add("new " + objectNameSpace + "." + oce.Type + "()");
+                    }
+                    else
+                    {
+                        output.Add("new " + oce.Type + "()");
+                    }
                     break;
                 case "ParenthesizedExpression":
                     var pe = (ParenthesizedExpression)expression;
@@ -141,16 +159,22 @@ namespace Converter.Emitter.OutputFunctions
                 case "TypeReferenceExpression":
                     //TODO : better 
                     //FIND type
-                    bool wasFound = false;
-                    foreach (var ns in arguments.ReferencedNamespaces)
+                    string typeNameSpace;
+                    if (arguments.TypeTree.DefaultNamespace.ExistsType(expression.ToString()))
                     {
-                        if (arguments.TypeTree.ExistsTypeInNamespace(expression.ToString(), ns))
-                        {
-                            output.AddWithoutSpace(ns + "." + expression.ToString());
-                            wasFound = true;
-                        }
+                        typeNameSpace = arguments.TypeTree.DefaultNamespace.Namespace;
                     }
-                    if (!wasFound)
+                    else
+                    {
+                        typeNameSpace =
+                            arguments.ReferencedNamespaces.FirstOrDefault(
+                                ns => arguments.TypeTree.ExistsTypeInNamespace(expression.ToString(), ns));
+                    }
+                    if (typeNameSpace != null)
+                    {
+                        output.AddWithoutSpace(typeNameSpace + "." + expression);
+                    }
+                    else
                     {
                         output.AddWithoutSpace(expression.ToString());
                     }
@@ -209,6 +233,11 @@ namespace Converter.Emitter.OutputFunctions
                             output.AddWithoutSpace(")");
                         }
                     }
+                    break;
+                case "DefaultValueExpression":
+                    //default operator not supported in typescript since no type information is available at runtime
+                    //since javascript handles null as false in boolean expressions and as 0 in math expressions it is less critical in javascript.
+                    output.Add("null");
                     break;
                 default:
                     throw new NotImplementedException();

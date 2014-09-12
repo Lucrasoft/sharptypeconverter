@@ -43,6 +43,7 @@ namespace Converter.Emitter
                     SyntaxTree = syntax
                 });
             }
+           
         }
 
         internal static void ProcessNode(AstNode node, EmitterArguments arguments)

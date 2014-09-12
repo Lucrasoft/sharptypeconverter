@@ -6,7 +6,8 @@ namespace Converter
 {
     public static class Converter
     {
-        public static string Convert(string code){
+        public static string Convert(string code)
+        {
 
             var parser = new CSharpParser();
             var typeTree = new Tree();
@@ -17,7 +18,8 @@ namespace Converter
             emitter.Process(syntax);
             return emitter.Result;
         }
-        public static IEnumerable<string> Convert(List<string> codes){
+        public static IEnumerable<string> Convert(List<string> codes)
+        {
             var parser = new CSharpParser();
             var typeTree = new Tree();
             var emitter = new Emitter.Emitter(typeTree);
@@ -26,18 +28,16 @@ namespace Converter
             //preprocess -> fill typeTree with information
             foreach (var code in codes)
             {
-                var content = System.IO.File.ReadAllText(code);
-                var syntax = parser.Parse(content);
+                var syntax = parser.Parse(code);
                 typeTreeExtractor.Process(syntax);
             }
             var returnList = new List<string>();
             //preprocess -> fill typeTree with information
             foreach (var code in codes)
             {
-                var content = System.IO.File.ReadAllText(code);
-                var syntax = parser.Parse(content);
+                var syntax = parser.Parse(code);
                 emitter.Process(syntax);
-               returnList.Add(emitter.Result);
+                returnList.Add(emitter.Result);
             }
             return returnList;
         }
