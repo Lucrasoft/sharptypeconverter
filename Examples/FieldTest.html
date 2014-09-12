@@ -1,0 +1,32 @@
+﻿namespace Sample
+{
+    public class FieldTest
+    {
+        int t1, t2, t3;
+        const int X0 = 12;
+        public int X1;      // valuetype
+        public int X2 = 1;  // valuetype with initializer
+        public int X21 = Int16.MaxValue;
+        //Not implemented 
+        public int X3 = (3 + 2) * 9; // valuetype with complex initializer
+        //Not implemented (identifierExpression)
+        public int X4 = X0;  // valuetype with referenced initializer
+        string S1;
+        double D1;
+        //Single sng1; <- not working at the moment ?
+        bool B1 = true;
+        //test visibily
+        protected int X5;
+        private double X6;
+        int[][] X7;
+        public int x8, x9;
+        //valuetype array - not implemented yet (
+        int[] X11 = new int[3] { 4, 5, 6 };
+        int[] X10 = { 1, 2, 3, 4 };
+        int[] X9 = new int[3];
+        
+        public FieldTest()
+        {
+        }
+    }
+}

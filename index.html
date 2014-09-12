@@ -6,8 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="Sharptypeconverter : Convert C# source to Typescript">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-    <script src="javascripts/jquery-2.1.1.js"></script>
+      <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+      <link rel="stylesheet" href="stylesheets/codemirror.css">
+      <script src="javascripts/jquery-2.1.1.js"></script>
+      <script src="javascripts/codemirror.js"></script>
+      <script src="javascripts/mode/clike/clike.js"></script>
+      <script src="javascripts/mode/javascript/javascript.js"></script>
     <title>Sharptypeconverter</title>
   </head>
 
@@ -29,45 +33,75 @@
     </div>
 
     <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <p>
-          Sharptypeconverter is a project that tries to convert c# code to typescript code by parsing the c# to a syntax tree and emitting it as typescript
-          <p>
-          <p>
-              For now the project helps with the conversion as much as possible, but doesn't output 100% working code.
-          <p>
-          <p>
-              For a working example paste your c# code in the put textarea and press convert.
-              Only works for complete c# files including namespaces that build properly.
+      <div id="main_content_wrap" class="outer">
+          <section id="main_content" class="inner">
+              <p>
+                  Sharptypeconverter is a project that tries to convert c# code to typescript code by parsing the c# to a syntax tree and emitting it as typescript
+              <p>
+              <p>
+                  For now the project helps with the conversion as much as possible, but doesn't output 100% working code.
+              <p>
+              <p>
+                  For a working example paste your c# code in the put textarea and press convert.
+                  Only works for complete c# files including namespaces that build properly.
+                  <br/>
+                  <select id="demolist" onchange="loadFileContent(this.options[this.selectedIndex].value)">
+                      <option value="#">Example Codes ...</option>
+                      <option value="Examples/FieldTest.html">Fields</option>
+                      <option value="Examples/MethodTest.html">Methods</option>
+                      <option value="Examples/BlockStatementTest.html">Block Statements</option>
+                      <option value="Examples/PropertyTest.html">Properties</option>
+                  </select>
+              </p>
+          </section>
+          <!--<textarea id="inputArea" style="margin-left:1%; width:48%; height:300px; "></textarea>-->
+          <div style="margin-left:1%; width:48%;  float:left ">
+                <textarea id="inputArea"></textarea>
+             </div>
+                <div style="width:49%; float:left">
+                <textarea id="outputArea" style="width:100%;"></textarea>
+              </div>
+              <div style="text-align: center">
+                  <button onclick="convert()">convert</button>
+              </div>
 
-              <textarea id="inputArea" style="width:100%; height:100px"></textarea>
-              <button onclick="convert()">convert</button>
-              <textarea id="outputArea" style="width:100%; height:100px"></textarea>
-          </p>
-      </section>
-    </div>
+              <!-- FOOTER  -->
+              <div id="footer_wrap" class="outer">
+                  <footer class="inner">
+                      <p class="copyright">Sharptypeconverter maintained by <a href="https://github.com/Lucrasoft">Lucrasoft</a></p>
+                      <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+                  </footer>
+              </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Sharptypeconverter maintained by <a href="https://github.com/Lucrasoft">Lucrasoft</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
+              <script>
+                  var inputEditor = CodeMirror.fromTextArea(document.getElementById("inputArea"), {
+                      lineNumbers: true,
+                      mode: "text/x-csharp",
+                      matchBrackets: true
+                  });
+                  var outputEditor = CodeMirror.fromTextArea(document.getElementById("outputArea"), {
+                      lineNumbers: true,
+                      mode: "application/typescript",
+                      matchBrackets: true
+                  });
+                  function convert() {
+                      var data = "=" + inputEditor.getValue();
+                      $.ajax({
+                          type: "POST",
+                          url: "http://sharptypeconverter.lucrasoft.nl/api/convert",
+                          data: data,
+                      }).then(function (result) {
+                          outputEditor.setValue(result);
+                      },function(error) {
+                          outputEditor.setValue("could not convert code");
+                      });
+                  }
+                  function loadFileContent(url) {
+                      $.get(url, function (result) {
+                          inputEditor.setValue(result);
+                      });
+                  }
+              </script>
 
-      <script>
-            function convert() {
-                var data = "=" + $("#inputArea").val();
-                $.ajax({
-                    type: "POST",
-                    url: "http://sharptypeconverter.lucrasoft.nl/api/convert",
-                    data: data,
-                }).then(function (result) {
-                    $("#outputArea").val(result);
-                });
-            }
-      </script>
-
-  </body>
+</body>
 </html>

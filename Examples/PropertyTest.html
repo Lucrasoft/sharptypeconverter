@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Sample
+{
+    class PropertyTest
+    {
+        public int P1 { get; set; }
+        private int P2 { get; set; }
+        private int _P4;
+        public int P4
+        {
+            get
+            {
+                return _P4;
+            }
+        }
+        private int _P5;
+        public int P5
+        {
+            get
+            {
+                return _P5;
+            }
+            set
+            {
+                _P5 = value;
+            }
+        }
+        public string P6
+        {
+            get { return "P6"; }
+        }
+        public PropertyTest()
+        {
+
+        }
+    }
+}
