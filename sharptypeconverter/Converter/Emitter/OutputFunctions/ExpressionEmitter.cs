@@ -138,7 +138,8 @@ namespace Converter.Emitter.OutputFunctions
                     }
                     else
                     {
-                        output.Add("new " + oce.Type + "()");
+                        var type = TypeDeclarationExtractor.ExtractFromNamespaces(oce.Type.ToString(), arguments);
+                        output.Add("new " + type + "()");
                     }
                     break;
                 case "ParenthesizedExpression":

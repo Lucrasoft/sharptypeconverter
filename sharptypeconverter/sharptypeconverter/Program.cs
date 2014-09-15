@@ -17,19 +17,30 @@ namespace sharptypeconverter
             if (File.Exists(path))
             {
                 var output = Converter.Converter.Convert(File.ReadAllText(path));
-                File.WriteAllText(path + ".ts", output);
+                File.WriteAllText(path + ".ts", output.MainFiles.First());
+                var libraryPath = Path.GetDirectoryName(path) + "\\Library";
+                Directory.CreateDirectory(libraryPath);
+                foreach (var file in output.DefinitionFiles)
+                {
+                    File.WriteAllText(libraryPath + "\\" +  file.Key +".d.ts", file.Value.ToString());
+                }
             }
             if (Directory.Exists(path))
             {
                 var files = Directory.EnumerateFiles(path).Where(f => Path.GetExtension(f).Equals(".cs")).ToList();
                 var codes = files.Select(File.ReadAllText);
-                var typescriptCodes = Converter.Converter.Convert(codes.ToList()).ToList();
+                var result = Converter.Converter.Convert(codes.ToList());
                 var newDirectpryPath = path + "Typescript";
                 Directory.CreateDirectory(newDirectpryPath);
-                for (var i = 0; i < typescriptCodes.Count(); i++)
+                for (var i = 0; i < result.MainFiles.Count(); i++)
                 {
                     var fileName = Path.GetFileNameWithoutExtension(files.ElementAt(i));
-                    File.WriteAllText(newDirectpryPath + "\\" + fileName + ".ts", typescriptCodes.ElementAt(i));
+                    File.WriteAllText(newDirectpryPath + "\\" + fileName + ".ts", result.MainFiles.ElementAt(i));
+                }
+                Directory.CreateDirectory(newDirectpryPath + "\\Library");
+                foreach (var file in result.DefinitionFiles)
+                {
+                    File.WriteAllText(newDirectpryPath + "\\Library\\" + file.Key + ".d.ts", file.Value.ToString());
                 }
             }
         }

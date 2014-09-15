@@ -21,7 +21,7 @@ namespace Converter.Emitter.OutputFunctions
             }
             else
             {
-                output.Add(string.Format("/// <reference path='./library/{0}.d.ts' />", node.Namespace));
+                output.Add(string.Format("/// <reference path='./Library/{0}.d.ts' />", node.Namespace));
             }
         }
     }

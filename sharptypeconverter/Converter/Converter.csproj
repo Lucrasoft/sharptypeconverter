@@ -64,8 +64,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeSegment.cs" />
+    <Compile Include="ConversionResult.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Emitter\BaseEmitter.cs" />
+    <Compile Include="Emitter\Result.cs" />
     <Compile Include="Emitter\Emitter.cs" />
     <Compile Include="Emitter\EmitterArguments.cs" />
     <Compile Include="Emitter\EnumTypeDeclarationEmitter.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="Emitter\OutputFunctions\HelperFunctions\AstTypeToStringConverter.cs" />
     <Compile Include="Emitter\OutputFunctions\BaseTypesEmitter.cs" />
     <Compile Include="Emitter\OutputFunctions\ConstructorDeclarationEmitter.cs" />
+    <Compile Include="Emitter\OutputFunctions\HelperFunctions\TypeDeclarationExtractor.cs" />
     <Compile Include="Emitter\OutputFunctions\IfElseStatementEmitter.cs" />
     <Compile Include="Emitter\OutputFunctions\LockStatementEmitter.cs" />
     <Compile Include="Emitter\OutputFunctions\MethodOverloadDispatchEmitter.cs" />
@@ -110,6 +113,8 @@
     <Compile Include="Emitter\OutputFunctions\YieldReturnStatementEmitter.cs" />
     <Compile Include="Emitter\SwitchStatementEmitter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeScriptDefinition.cs" />
+    <Compile Include="TypeScriptDefinitionGroup.cs" />
     <Compile Include="TypeTreeExtractor.cs" />
     <Compile Include="TypeTree\NamespaceInfo.cs" />
     <Compile Include="TypeTree\NodeReference.cs" />

@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System.Linq;
+using System.Web.Http;
 
 namespace WebApp.Controllers
 {
@@ -7,7 +8,7 @@ namespace WebApp.Controllers
         [AllowCrossSiteJson]
         public string Post([FromBody] string value)
         {
-            return Converter.Converter.Convert(value);
+            return Converter.Converter.Convert(value).MainFiles.First();
         }
     }
 }

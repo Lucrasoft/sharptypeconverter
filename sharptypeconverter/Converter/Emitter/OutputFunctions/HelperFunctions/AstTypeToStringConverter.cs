@@ -29,7 +29,14 @@ namespace Converter.Emitter.OutputFunctions.HelperFunctions
                 else
                 {
                     var nameSpace = namespaces.FirstOrDefault(ns => typeTree.ExistsTypeInNamespace(result, ns));
-                    result = string.IsNullOrEmpty(nameSpace) ? result : nameSpace + "." + result;
+                    if (string.IsNullOrEmpty(nameSpace))
+                    {
+                        result = TypeDeclarationExtractor.ExtractFromNamespaces(result,arguments);
+                    }
+                    else
+                    {
+                         result = nameSpace + "." + result;
+                    }
                 }
                 result += TypeArgumentsToString(st.TypeArguments, arguments);
                 return result;

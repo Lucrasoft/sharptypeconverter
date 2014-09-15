@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ICSharpCode.NRefactory.CSharp;
 using Converter.TypeTree;
 using Converter.Emitter.OutputFunctions;
@@ -12,11 +13,11 @@ namespace Converter.Emitter
         private readonly Queue<AstNode> postPonedNodes = new Queue<AstNode>();
         private readonly List<string> referencedNamespaces = new List<string>();
 
-        public string Result
+        public Result Result
         {
             get
             {
-                return output.Result;
+                return new Result(){MainFile = output.Result, DefinitionFiles = output.DefinitionFiles };
             }
         }
 

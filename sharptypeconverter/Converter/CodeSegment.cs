@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Converter
 {
@@ -7,17 +10,26 @@ namespace Converter
         private const string IndentString = "\t";
         private int indent;
         private bool needsIndent;
-        private readonly StringBuilder sb;
+        private readonly StringBuilder mainFileBuilder;
+        private readonly Dictionary<string, TypeScriptDefinitionGroup> definitionFiles;
 
         public string Result
         {
             get
-            { return sb.ToString(); }
+            { return mainFileBuilder.ToString(); }
+        }
+        public Dictionary<string, TypeScriptDefinitionGroup> DefinitionFiles
+        {
+            get
+            {
+                return definitionFiles;
+            }
         }
 
         public CodeSegment()
         {
-            sb = new StringBuilder();
+            mainFileBuilder = new StringBuilder();
+            definitionFiles = new Dictionary<string, TypeScriptDefinitionGroup>();
             indent = 0;
         }
 
@@ -39,48 +51,59 @@ namespace Converter
                 needsIndent = false;
                 for (int i = 0; i < indent; i++)
                 {
-                    sb.Append(IndentString);
+                    mainFileBuilder.Append(IndentString);
                 }
             }
         }
 
         public void NewLine()
         {
-            sb.AppendLine();
+            mainFileBuilder.AppendLine();
             needsIndent = true;
         }
 
 
         public void AddLineToTop(string text)
         {
-            sb.Insert(0, text + "\r\n");
+            mainFileBuilder.Insert(0, text + "\r\n");
         }
 
 
         public void Add(string text)
         {
             WriteIndent();
-            sb.Append(text + " ");
+            mainFileBuilder.Append(text + " ");
         }
 
         public void AddLine(string text)
         {
             WriteIndent();
-            sb.AppendLine(text);
+            mainFileBuilder.AppendLine(text);
             needsIndent = true;
         }
 
         public void AddWithoutSpace(string text)
         {
             WriteIndent();
-            sb.Append(text);
+            mainFileBuilder.Append(text);
         }
 
         public void Comment(string text)
         {
             WriteIndent();
-            sb.AppendLine("//" + text);
+            mainFileBuilder.AppendLine("//" + text);
             needsIndent = true;
+        }
+
+        public void AddTypeDefinition(string fileName, TypeScriptDefinition definition)
+        {
+            if (definitionFiles.ContainsKey(fileName))
+            {
+                definitionFiles[fileName].AddIfNew(definition);
+                return;
+            }
+            definitionFiles.Add(fileName,
+                new TypeScriptDefinitionGroup {Definitions = new List<TypeScriptDefinition> {definition}});
         }
     }
 }
