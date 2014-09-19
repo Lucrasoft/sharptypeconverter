@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System;
 using System.Text;
 
 namespace Converter
@@ -11,25 +10,20 @@ namespace Converter
         private int indent;
         private bool needsIndent;
         private readonly StringBuilder mainFileBuilder;
-        private readonly Dictionary<string, TypeScriptDefinitionGroup> definitionFiles;
+        public Dictionary<string, List<Type>> TypesRequested { get; private set; }
 
         public string Result
         {
             get
             { return mainFileBuilder.ToString(); }
         }
-        public Dictionary<string, TypeScriptDefinitionGroup> DefinitionFiles
-        {
-            get
-            {
-                return definitionFiles;
-            }
-        }
+
+        
 
         public CodeSegment()
         {
             mainFileBuilder = new StringBuilder();
-            definitionFiles = new Dictionary<string, TypeScriptDefinitionGroup>();
+            TypesRequested = new Dictionary<string, List<Type>>();
             indent = 0;
         }
 
@@ -95,15 +89,19 @@ namespace Converter
             needsIndent = true;
         }
 
-        public void AddTypeDefinition(string fileName, TypeScriptDefinition definition)
+        public void AddTypeRequest(string fileName, Type definition)
         {
-            if (definitionFiles.ContainsKey(fileName))
+            if (TypesRequested.ContainsKey(fileName))
             {
-                definitionFiles[fileName].AddIfNew(definition);
-                return;
+                if (!TypesRequested[fileName].Contains(definition))
+                {
+                    TypesRequested[fileName].Add(definition);
+                }
             }
-            definitionFiles.Add(fileName,
-                new TypeScriptDefinitionGroup {Definitions = new List<TypeScriptDefinition> {definition}});
+            else
+            {
+                TypesRequested.Add(fileName, new List<Type> {definition});
+            }
         }
     }
 }

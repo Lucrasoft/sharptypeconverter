@@ -67,6 +67,7 @@
     <Compile Include="ConversionResult.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Emitter\BaseEmitter.cs" />
+    <Compile Include="Emitter\ReferencedTypesEmitter.cs" />
     <Compile Include="Emitter\Result.cs" />
     <Compile Include="Emitter\Emitter.cs" />
     <Compile Include="Emitter\EmitterArguments.cs" />

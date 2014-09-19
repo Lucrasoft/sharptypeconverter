@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Converter.Emitter;
 using Converter.TypeTree;
 using ICSharpCode.NRefactory.CSharp;
 
@@ -17,7 +19,7 @@ namespace Converter
             var syntax = parser.Parse(code);
             typeTreeExtractor.Process(syntax);
             emitter.Process(syntax);
-            return new ConversionResult{MainFiles =  new List<string>{emitter.Result.MainFile},DefinitionFiles = emitter.Result.DefinitionFiles};
+            return new ConversionResult{MainFiles =  new List<string>{emitter.Result.MainFile},DefinitionFiles = ReferencedTypesEmitter.CreateFiles(emitter.Result.TypesRequested)};
         }
         public static ConversionResult Convert(List<string> codes)
         {
@@ -33,23 +35,25 @@ namespace Converter
                 typeTreeExtractor.Process(syntax);
             }
             //preprocess -> fill typeTree with information
+            var requestedTypes = new Dictionary<string, List<Type>>();
             foreach (var code in codes)
             {
                 var syntax = parser.Parse(code);
                 emitter.Process(syntax);
                 conversionResult.MainFiles.Add(emitter.Result.MainFile);
-                foreach (var file in emitter.Result.DefinitionFiles)
+                foreach (var file in emitter.Result.TypesRequested)
                 {
-                    if (!conversionResult.DefinitionFiles.ContainsKey(file.Key))
+                    if (!requestedTypes.ContainsKey(file.Key))
                     {
-                        conversionResult.DefinitionFiles.Add(file.Key, file.Value);
+                        requestedTypes.Add(file.Key, file.Value);
                     }
                     else
                     {
-                        conversionResult.DefinitionFiles[file.Key].MergeWith(file.Value);
+                        requestedTypes[file.Key] = requestedTypes[file.Key].Union(file.Value).ToList();
                     }
                 }
             }
+            conversionResult.DefinitionFiles = ReferencedTypesEmitter.CreateFiles(requestedTypes);
             return conversionResult;
         }
     }

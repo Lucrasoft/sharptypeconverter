@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace Converter.Emitter.OutputFunctions.HelperFunctions
 {
@@ -18,13 +17,7 @@ namespace Converter.Emitter.OutputFunctions.HelperFunctions
                 var typeInfo = Type.GetType(nameSpace + "." + typeName);
                 if (typeInfo != null)
                 {
-                    var splitName = typeInfo.FullName.Split('.');
-                    var modules = splitName.Take(splitName.Length -1).ToList();
-                    arguments.Output.AddTypeDefinition(nameSpace,new TypeScriptDefinition()
-                    {
-                        Modules = modules,
-                        TypeName = splitName.Last()
-                    });
+                    arguments.Output.AddTypeRequest(nameSpace, typeInfo);
                     return typeInfo.FullName;
                 }
             }
