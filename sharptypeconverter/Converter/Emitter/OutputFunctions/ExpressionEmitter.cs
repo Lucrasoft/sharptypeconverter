@@ -134,12 +134,30 @@ namespace Converter.Emitter.OutputFunctions
                     }
                     if (objectNameSpace != null)
                     {
-                        output.Add("new " + objectNameSpace + "." + oce.Type + "()");
+                        output.Add("new " + objectNameSpace + "." + oce.Type + "(");
+                        for (var i = 0; i < oce.Arguments.Count(); i++)
+                        {
+                            if (i > 0)
+                            {
+                                output.Add(", ");
+                            }
+                            Output(oce.Arguments.ElementAt(i), arguments);
+                        }
+                        output.Add(")");
                     }
                     else
                     {
                         var type = TypeDeclarationExtractor.ExtractFromNamespaces(oce.Type.ToString(), arguments);
-                        output.Add("new " + type + "()");
+                        output.Add("new " + type + "(");
+                        for(var i = 0; i < oce.Arguments.Count(); i++)
+                        {
+                            if (i > 0)
+                            {
+                                output.Add(", ");
+                            }
+                            Output(oce.Arguments.ElementAt(i), arguments);
+                        }
+                        output.Add(")");
                     }
                     break;
                 case "ParenthesizedExpression":
