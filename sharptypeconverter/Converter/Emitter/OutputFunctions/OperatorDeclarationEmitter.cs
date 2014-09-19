@@ -17,7 +17,7 @@ namespace Converter.Emitter.OutputFunctions
         }
         internal override void Output(OperatorDeclaration node)
         {
-            output.Add((node.Modifiers & Modifiers.Private) == Modifiers.Private ? "private static" : "export static");
+            output.Add((node.Modifiers & Modifiers.Private) == Modifiers.Private ? "private static" : "static");
             //Check if this method is overloaded in this Type.. 
             //If so : use the new name from the preprocess
             //syntaxTree.GetNodeAt(
