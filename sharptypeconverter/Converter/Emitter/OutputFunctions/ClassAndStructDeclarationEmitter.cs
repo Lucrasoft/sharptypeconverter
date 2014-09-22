@@ -1,4 +1,6 @@
-﻿using ICSharpCode.NRefactory.CSharp;
+﻿using System.Linq;
+using ICSharpCode.NRefactory.CSharp;
+using Modifiers = ICSharpCode.NRefactory.CSharp.Modifiers;
 
 namespace Converter.Emitter.OutputFunctions
 {
@@ -7,7 +9,15 @@ namespace Converter.Emitter.OutputFunctions
         internal static void Output(TypeDeclaration node, EmitterArguments arguments){
             var output = arguments.Output;
             var typeTree = arguments.TypeTree;
-            output.Add((node.Modifiers & Modifiers.Private) == Modifiers.Private ? "private" : "export");
+            var modifier = (node.Modifiers & Modifiers.Private) == Modifiers.Private ? "private" : "export";
+            //check for delegates, they have to by declared outside the class declaration
+            var delegates =
+                node.Members.Where(m => m.GetType().ToString().Equals("ICSharpCode.NRefactory.CSharp.DelegateDeclaration")).ToList();
+            foreach (var delegateNode in delegates)
+            {
+                new DelegateDeclarationEmitter(arguments, modifier).Output((DelegateDeclaration)delegateNode);
+            }
+            output.Add(modifier);
             //consider a Struct also as a Class
             output.Add("class");
             output.Add(node.Name);
@@ -21,7 +31,7 @@ namespace Converter.Emitter.OutputFunctions
             output.IndentIncrease();
             // members -> proces the node.Members.
             // this should be : fields, properties, constructors and methods
-            foreach (EntityDeclaration item in node.Members)
+            foreach (EntityDeclaration item in node.Members.Except(delegates))
             {
                 Emitter.ProcessNode(item,arguments);
             }

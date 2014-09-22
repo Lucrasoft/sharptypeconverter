@@ -1,19 +1,22 @@
 ﻿using Converter.Emitter.OutputFunctions.HelperFunctions;
 using ICSharpCode.NRefactory.CSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Converter.Emitter.OutputFunctions
 {
     class DelegateDeclarationEmitter : BaseEmitter<DelegateDeclaration>
     {
-        readonly CodeSegment output;
+        private readonly CodeSegment output;
+        private readonly string accessModifier;
         internal DelegateDeclarationEmitter(EmitterArguments arguments)
             : base(arguments)
         {
+            accessModifier = null;
+            output = arguments.Output;
+        }
+        internal DelegateDeclarationEmitter(EmitterArguments arguments,string modifier)
+            : base(arguments)
+        {
+            accessModifier = modifier;
             output = arguments.Output;
         }
 
@@ -21,7 +24,10 @@ namespace Converter.Emitter.OutputFunctions
         {
             bool isPrivate = ((node.Modifiers & Modifiers.Private) == Modifiers.Private);
 
-            if (isPrivate) { output.Add("private"); }
+            if (!string.IsNullOrEmpty(accessModifier))
+            {
+                output.Add(accessModifier + " ");
+            }
 
             //Check if this method is overloaded in this Type.. 
             //If so : use the new name from the preprocess
