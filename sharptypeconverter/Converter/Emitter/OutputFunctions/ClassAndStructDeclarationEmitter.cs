@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ICSharpCode.NRefactory.CSharp;
 using Modifiers = ICSharpCode.NRefactory.CSharp.Modifiers;
 
@@ -31,10 +32,17 @@ namespace Converter.Emitter.OutputFunctions
             output.IndentIncrease();
             // members -> proces the node.Members.
             // this should be : fields, properties, constructors and methods
+           
             foreach (EntityDeclaration item in node.Members.Except(delegates))
             {
                 Emitter.ProcessNode(item,arguments);
             }
+            //overloaded method are skipped in the processNode function, so are handled here
+            foreach (var methodList in node.Members.Where(m => m.GetType() == typeof(MethodDeclaration)).GroupBy(m => m.Name).Where(g => g.Count() > 1).Select(g => g.Cast<MethodDeclaration>().ToList()))
+            {
+                new MethodDeclarationEmitter(arguments).OutputOverloaded(methodList);
+            }
+
             //Check if overloaded constructor was processed
             if (typeTree.ActiveType.Constructors.ContainsKey(node.Name))
             {
@@ -42,16 +50,6 @@ namespace Converter.Emitter.OutputFunctions
                 if (constructor != null && constructor.isOverloaded)
                 {
                     ConstructorOverloadDispatchEmitter.Output(constructor,arguments);
-                }
-            }
-            //Check if overloaded method was processed
-            foreach (var methodName in typeTree.ActiveType.Methods.Keys)
-            {
-                var method = typeTree.ActiveType.Methods[methodName];
-                if (method.isOverloaded)
-                {
-                    //generate a "dispatch" method , which handles/calls all overloaded methods
-                    MethodOverloadDispatchEmitter.Output(method,arguments);
                 }
             }
             output.IndentDecrease();
