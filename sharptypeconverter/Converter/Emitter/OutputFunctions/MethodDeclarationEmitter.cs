@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Converter.Emitter.OutputFunctions.HelperFunctions;
 using Converter.TypeTree;
 using ICSharpCode.NRefactory.CSharp;
@@ -90,9 +91,25 @@ namespace Converter.Emitter.OutputFunctions
         {
             switch (type)
             {
+                case "byte":
+                    return "number";
                 case "int":
                     return "number";
+                case "Int16":
+                    return "number";
                 case "Int32":
+                    return "number";
+                case "Int64":
+                    return "number";
+                case "UInt16":
+                    return "number";
+                case "UInt32":
+                    return "number";
+                case "UInt64":
+                    return "number";
+                case "float":
+                    return "number";
+                case "double":
                     return "number";
                 case "string":
                     return "string";
