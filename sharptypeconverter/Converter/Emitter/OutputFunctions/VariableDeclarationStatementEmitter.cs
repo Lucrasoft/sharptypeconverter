@@ -14,10 +14,11 @@ namespace Converter.Emitter.OutputFunctions
         internal override void Output(VariableDeclarationStatement node)
         {
             var isVar = (node.Type.ToString() == "var");
+            output.Add("var");
             for (int i = 0; i < node.Variables.Count; i++)
             {
                 VariableInitializer vi = node.Variables.ElementAt(i);
-                output.Add("var");
+                
                 output.Add(vi.Name);
                 if (!isVar)
                 {
@@ -30,18 +31,15 @@ namespace Converter.Emitter.OutputFunctions
                     output.Add("=");
                     ExpressionEmitter.Output(vi.Initializer,EmitterArguments);
                 }
-                if (EmitterArguments.IsForStatementInitializerBusy)
+                if (i < node.Variables.Count - 1)
                 {
-                    if (i < node.Variables.Count - 1)
-                    {
-                        output.Add(",");
-                    }
+                    output.Add(",");
                 }
-                else
-                {
-                    output.Add(";");
-                    output.NewLine();
-                }
+            }
+            if (!EmitterArguments.IsForStatementInitializerBusy)
+            {
+                output.Add(";");
+                output.NewLine();
             }
         }
     }
