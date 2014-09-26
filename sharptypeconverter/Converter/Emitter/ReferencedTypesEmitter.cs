@@ -280,6 +280,10 @@ namespace Converter.Emitter
                     return "boolean";
                 case "System.Int32":
                     return "number";
+                case "System.Double":
+                    return "number";
+                case "System.Float":
+                    return "number";
                 case "System.Void":
                     return "void";
                 case "System.String[]":
