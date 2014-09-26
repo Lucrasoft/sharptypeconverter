@@ -60,24 +60,32 @@ namespace Converter.Emitter.OutputFunctions
                 output.IndentIncrease();
                 foreach (var method in methods)
                 {
-                    output.AddWithoutSpace("if(");
-                    for (var i = 0; i < methods.Key; i++)
+                    if (methods.Key > 0)
                     {
-                        if (i > 0)
+                        output.AddWithoutSpace("if(");
+                        for (var i = 0; i < methods.Key; i++)
                         {
-                            output.Add("&&");
+                            if (i > 0)
+                            {
+                                output.Add("&&");
+                            }
+                            output.Add("typeof arguments[" + i + "] == \"" +
+                                       getJavascriptType(method.Parameters.ElementAt(i).Type.ToString()) + "\"");
                         }
-                        output.Add("typeof arguments[" + i + "] == \"" + getJavascriptType(method.Parameters.ElementAt(i).Type.ToString()) + "\"");
-                    }
-                    output.AddLine("){");
-                    output.IndentIncrease();
-                    for (var i = 0; i < methods.Key; i++)
-                    {
-                        output.AddLine("var " + method.Parameters.ElementAt(i).Name + " = arguments[" + i + "];");
+                        output.AddLine("){");
+                        output.IndentIncrease();
+
+                        for (var i = 0; i < methods.Key; i++)
+                        {
+                            output.AddLine("var " + method.Parameters.ElementAt(i).Name + " = arguments[" + i + "];");
+                        }
                     }
                     new BlockStatementEmitter(EmitterArguments).Output(method.Body);
-                    output.IndentDecrease();
-                    output.AddLine("}");
+                    if (methods.Key > 0)
+                    {
+                        output.IndentDecrease();
+                        output.AddLine("}");
+                    }
                 }
                 output.IndentDecrease();
                 
